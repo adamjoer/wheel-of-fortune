@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 
+const val TAG = "GameFragment"
+
 /**
  * Fragment for 'Wheel of Fortune' game logic
  */
@@ -28,11 +30,16 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup click listener for 'spin the wheel' button
+        // Setup click listeners for buttons
         _binding.spinWheel.setOnClickListener { onSpinWheel() }
+        _binding.submitGuess.setOnClickListener { onSubmitGuess() }
     }
 
     private fun onSpinWheel() {
-        Log.d("GameFragment", "onSpinWheel called")
+        Log.d(TAG, "onSpinWheel called")
+    }
+
+    private fun onSubmitGuess() {
+        Log.d(TAG, "onSubmitGuess called")
     }
 }
