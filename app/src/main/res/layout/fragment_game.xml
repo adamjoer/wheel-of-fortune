@@ -59,7 +59,7 @@
             tools:text="Wheel result" />
 
         <Button
-            android:id="@+id/spin_wheel_button"
+            android:id="@+id/spin_wheel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Spin the Wheel!"
