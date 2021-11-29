@@ -4,4 +4,5 @@
     <string name="submit_guess">Submit guess</string>
     <string name="lives">Lives: %d</string>
     <string name="score">Score: %d</string>
+    <string name="guess_input_hint">Enter a letter or guess the whole word</string>
 </resources>
