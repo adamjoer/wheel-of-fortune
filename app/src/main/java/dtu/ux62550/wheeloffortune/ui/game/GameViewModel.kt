@@ -20,24 +20,8 @@ class GameViewModel : ViewModel() {
     val score: LiveData<Int>
         get() = _score
 
-    private val _currentGuessWord = MutableLiveData<String>()
-    val currentGuessWord: LiveData<Spannable> = Transformations.map(_currentGuessWord) {
+    private val _currentGuessWord = MutableLiveData<String>("Foo")
+    val currentGuessWord: LiveData<String>
+        get() = _currentGuessWord
 
-        if (it == null) {
-            Log.d("GameViewModel", "\"it\" is null!")
-            SpannableString("")
-
-        } else {
-            Log.d("GameViewModel", "\"it\" is not null")
-            val currentWord = it.toString()
-            val spannable: Spannable = SpannableString(currentWord)
-            spannable.setSpan(
-                TtsSpan.VerbatimBuilder(currentWord).build(),
-                0,
-                currentWord.length,
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE
-            )
-            spannable
-        }
-    }
 }
