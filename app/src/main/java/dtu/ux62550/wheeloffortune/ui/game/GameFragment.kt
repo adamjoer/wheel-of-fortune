@@ -34,9 +34,9 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.gameViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.currentWord.text = viewModel.currentGuessWord.value
+        binding.gameViewModel = viewModel
 
         // Setup click listeners for buttons
         binding.spinWheel.setOnClickListener { onSpinWheel() }
