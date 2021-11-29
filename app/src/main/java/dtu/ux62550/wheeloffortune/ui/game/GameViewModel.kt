@@ -20,8 +20,7 @@ class GameViewModel : ViewModel() {
     val score: LiveData<Int>
         get() = _score
 
-    private val _currentGuessWord = MutableLiveData<String>("Foo")
-    val currentGuessWord: LiveData<String>
-        get() = _currentGuessWord
-
+    private val _currentWordPuzzle = MutableLiveData<String>()
+    val currentWordPuzzle: LiveData<String>
+        get() = _currentWordPuzzle
 }
