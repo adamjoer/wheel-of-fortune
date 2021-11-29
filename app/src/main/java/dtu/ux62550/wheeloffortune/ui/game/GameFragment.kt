@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 
 const val TAG = "GameFragment"
@@ -15,24 +16,31 @@ const val TAG = "GameFragment"
  */
 class GameFragment : Fragment() {
 
-    private lateinit var _binding: FragmentGameBinding
+    private lateinit var binding: FragmentGameBinding
+    private lateinit var viewModel: GameViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
+        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+
         // Inflate the layout for this fragment
-        _binding = FragmentGameBinding.inflate(inflater)
-        return _binding.root
+        binding = FragmentGameBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.gameViewModel = viewModel
+
+        binding.currentWord.text = viewModel.currentGuessWord.value
+
         // Setup click listeners for buttons
-        _binding.spinWheel.setOnClickListener { onSpinWheel() }
-        _binding.submitGuess.setOnClickListener { onSubmitGuess() }
+        binding.spinWheel.setOnClickListener { onSpinWheel() }
+        binding.submitGuess.setOnClickListener { onSubmitGuess() }
     }
 
     private fun onSpinWheel() {
