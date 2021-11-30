@@ -58,17 +58,21 @@ class GameFragment : Fragment() {
 
         if (input.length == 1) {
 
-            val regex = Regex("[a-zA-z0-9]")
-            if (!regex.matches(input)) {
+            if (!(input[0] in 'a'..'z' || input[0] in 'A'..'Z' || input[0] in '0'..'9')) {
                 setErrorTextField(true, R.string.error_invalid_input)
+                binding.guessInput.text?.clear()
                 return
             }
 
-            if (!viewModel.addGuessedChar(input[0])) {
+            val matches = viewModel.addGuessedChar(input[0])
+            if (matches < 0) {
                 setErrorTextField(true, R.string.error_char_already_guessed)
 
             } else {
                 setErrorTextField(false)
+
+                Log.d("GameFragment", "Matches = $matches")
+                viewModel.incrementScore(matches)
             }
 
         } else {

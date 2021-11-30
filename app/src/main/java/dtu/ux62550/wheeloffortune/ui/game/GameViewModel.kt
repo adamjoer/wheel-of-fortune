@@ -31,6 +31,10 @@ class GameViewModel : ViewModel() {
 
     private lateinit var puzzleAnswer: String
 
+    private var charactersToBeGuessed = -1
+
+    private var charactersGuessed = 0
+
     init {
         _guessedCharacters.value = mutableListOf()
         loadPuzzle()
@@ -38,45 +42,71 @@ class GameViewModel : ViewModel() {
 
     private fun updatePuzzleString() {
 
-        val builder = java.lang.StringBuilder("[^ _\\-!,.")
-        _guessedCharacters.value?.forEach { char ->
-            builder.append(char)
+        val regexBuilder = java.lang.StringBuilder("[^ _\\-!,.")
+        for (char in _guessedCharacters.value!!) {
+            regexBuilder.append(char)
         }
-        builder.append("]")
+        regexBuilder.append("]")
 
-        val regexString = builder.toString()
-
-        Log.d("GameViewModel", "generatePuzzle: current regex = \"$regexString\"")
-
-        _wordPuzzle.value = puzzleAnswer.replace(Regex(regexString), "_")
+        _wordPuzzle.value = puzzleAnswer.replace(Regex(regexBuilder.toString()), "_")
     }
 
     private fun loadPuzzle() {
         val wordAndCategory = wordsAndCategories.random()
 
         puzzleAnswer = wordAndCategory.second.uppercase(Locale.getDefault())
-
         _category.value = wordAndCategory.first
+
+        charactersToBeGuessed = puzzleAnswer.count {
+            it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9'
+        }
 
         updatePuzzleString()
 
-        Log.d("GameViewModel", "Category = \"${_category.value} Answer = \"$puzzleAnswer\"")
+        Log.d(
+            "GameViewModel",
+            "Category = \"${_category.value}\" Answer = \"$puzzleAnswer\" ($charactersToBeGuessed)"
+        )
     }
 
-    fun addGuessedChar(char: Char): Boolean {
+    fun addGuessedChar(char: Char): Int {
         val upperCaseChar = char.uppercaseChar()
 
         if (_guessedCharacters.value!!.contains(upperCaseChar))
-            return false
+            return -1
 
         _guessedCharacters.value?.add(upperCaseChar)
 
         updatePuzzleString()
 
-        return true
+        val matches = countMatches(upperCaseChar)
+
+        charactersGuessed = charactersGuessed.plus(matches)
+
+        Log.d("GameViewModel", "charactersGuessed = $charactersGuessed")
+
+        return matches
     }
 
     fun isGuessRight(string: String): Boolean {
         return puzzleAnswer.equals(string, true)
+    }
+
+    private fun countMatches(char: Char): Int {
+        var count = 0
+        for (answerChar in puzzleAnswer) {
+            if (answerChar == char)
+                count = count.inc()
+        }
+
+        return count
+    }
+
+    fun incrementScore(matches: Int) {
+        _score.value = _score.value?.plus(matches)
+    }
+
+    fun hasWordBeenGuessed(): Boolean {
+        return charactersGuessed == charactersToBeGuessed
     }
 }
