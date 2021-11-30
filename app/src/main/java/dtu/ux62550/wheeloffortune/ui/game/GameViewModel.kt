@@ -63,14 +63,17 @@ class GameViewModel : ViewModel() {
         Log.d("GameViewModel", "Category = \"${_category.value} Answer = \"$puzzleAnswer\"")
     }
 
-    fun addGuessedChar(char: Char) {
+    fun addGuessedChar(char: Char): Boolean {
         val upperCaseChar = char.uppercaseChar()
 
-        assert(!_guessedCharacters.value!!.contains(upperCaseChar))
+        if (_guessedCharacters.value!!.contains(upperCaseChar))
+            return false
 
         _guessedCharacters.value?.add(upperCaseChar)
 
         updatePuzzleString()
+
+        return true
     }
 
     fun isGuessRight(string: String): Boolean {

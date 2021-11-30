@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import dtu.ux62550.wheeloffortune.R
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 
 /**
@@ -50,10 +51,25 @@ class GameFragment : Fragment() {
 
         val input = binding.guessInput.text.toString()
 
-        assert(input.isNotEmpty())
+        if (input.isEmpty()) {
+            setErrorTextField(true, R.string.error_no_input)
+            return
+        }
 
         if (input.length == 1) {
-            viewModel.addGuessedChar(input[0])
+
+            val regex = Regex("[a-zA-z0-9]")
+            if (!regex.matches(input)) {
+                setErrorTextField(true, R.string.error_invalid_input)
+                return
+            }
+
+            if (!viewModel.addGuessedChar(input[0])) {
+                setErrorTextField(true, R.string.error_char_already_guessed)
+
+            } else {
+                setErrorTextField(false)
+            }
 
         } else {
             if (viewModel.isGuessRight(input)) {
@@ -62,5 +78,11 @@ class GameFragment : Fragment() {
         }
 
         binding.guessInput.text?.clear()
+    }
+
+    private fun setErrorTextField(error: Boolean, errorMessage: Int = -1) {
+        binding.guessInputLayout.isErrorEnabled = error
+
+        binding.guessInputLayout.error = if (error) getString(errorMessage) else null
     }
 }
