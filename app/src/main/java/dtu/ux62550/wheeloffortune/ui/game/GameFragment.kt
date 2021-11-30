@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import dtu.ux62550.wheeloffortune.R
+import dtu.ux62550.wheeloffortune.adapter.GuessedCharAdapter
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 
 /**
@@ -27,6 +28,19 @@ class GameFragment : Fragment() {
 
         // Inflate the layout for this fragment
         binding = FragmentGameBinding.inflate(inflater)
+
+        // Initialise and assign adapter to the RecyclerView
+        val adapter = GuessedCharAdapter()
+        binding.guessedChars.adapter = adapter
+
+        // Add observer to the guessedCharacters list, so the RecyclerView gets updated
+        viewModel.guessedCharacters.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.submitList(it)
+                adapter.notifyItemInserted(it.size - 1)
+            }
+        })
+
         return binding.root
     }
 
@@ -79,6 +93,7 @@ class GameFragment : Fragment() {
             if (viewModel.isGuessRight(input)) {
                 Log.d("GameFragment", "OMG, the guess was right!")
             }
+            setErrorTextField(false)
         }
 
         binding.guessInput.text?.clear()

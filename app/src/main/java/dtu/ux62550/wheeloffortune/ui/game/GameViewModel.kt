@@ -41,8 +41,7 @@ class GameViewModel : ViewModel() {
     }
 
     private fun updatePuzzleString() {
-
-        val regexBuilder = java.lang.StringBuilder("[^ _\\-!,.")
+        val regexBuilder = StringBuilder("[^ _\\-!,.")
         for (char in _guessedCharacters.value!!) {
             regexBuilder.append(char)
         }
@@ -76,6 +75,7 @@ class GameViewModel : ViewModel() {
             return -1
 
         _guessedCharacters.value?.add(upperCaseChar)
+        _guessedCharacters.value = _guessedCharacters.value
 
         updatePuzzleString()
 
