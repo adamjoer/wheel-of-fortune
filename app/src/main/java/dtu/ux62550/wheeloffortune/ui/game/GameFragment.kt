@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 
-const val TAG = "GameFragment"
-
 /**
  * Fragment for 'Wheel of Fortune' game logic
  */
@@ -44,10 +42,10 @@ class GameFragment : Fragment() {
     }
 
     private fun onSpinWheel() {
-        Log.d(TAG, "onSpinWheel called")
+        Log.d("GameFragment", "onSpinWheel called")
     }
 
     private fun onSubmitGuess() {
-        Log.d(TAG, "onSubmitGuess called")
+        Log.d("GameFragment", "onSubmitGuess called")
     }
 }
