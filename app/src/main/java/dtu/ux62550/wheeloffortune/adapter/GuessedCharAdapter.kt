@@ -1,6 +1,5 @@
 package dtu.ux62550.wheeloffortune.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -16,15 +15,12 @@ class GuessedCharAdapter : ListAdapter<Char, GuessedCharAdapter.ViewHolder>(Data
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d("GuessedCharAdapter", "onCreateViewHolder called")
         return ViewHolder.from(parent)
     }
 
     class ViewHolder(private val binding: GuessedCharItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Char) {
-            Log.d("GuessedCharAdapter", "ViewHolder.bind called")
-
             binding.character = item.toString()
             binding.executePendingBindings()
         }
