@@ -17,15 +17,19 @@ class GameViewModel : ViewModel() {
     val score: LiveData<Int>
         get() = _score
 
-    private val _currentWordPuzzle = MutableLiveData<String>()
-    val currentWordPuzzle: LiveData<String>
-        get() = _currentWordPuzzle
+    private val _wordPuzzle = MutableLiveData<String>()
+    val wordPuzzle: LiveData<String>
+        get() = _wordPuzzle
 
-    private val _currentCategory = MutableLiveData<String>()
-    val currentCategory: LiveData<String>
-        get() = _currentCategory
+    private val _category = MutableLiveData<String>()
+    val category: LiveData<String>
+        get() = _category
 
-    private lateinit var wordAndCategory: Pair<String, String>
+    private val _guessedCharacters = MutableLiveData<MutableList<Char>>()
+    val guessedCharacters: LiveData<MutableList<Char>>
+        get() = _guessedCharacters
+
+    private lateinit var puzzleAnswer: String
 
     init {
         loadPuzzle()
