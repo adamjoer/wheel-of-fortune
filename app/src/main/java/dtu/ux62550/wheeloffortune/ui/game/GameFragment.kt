@@ -72,7 +72,7 @@ class GameFragment : Fragment() {
 
         if (input.length == 1) {
 
-            if (!(input[0] in 'a'..'z' || input[0] in 'A'..'Z' || input[0] in '0'..'9')) {
+            if (!(input[0] in 'a'..'z' || input[0] in 'A'..'Z')) {
                 setErrorTextField(true, R.string.error_invalid_input)
                 binding.guessInput.text?.clear()
                 return

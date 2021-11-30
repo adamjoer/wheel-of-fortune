@@ -7,5 +7,5 @@
     <string name="guess_input_hint">Enter a letter or guess the whole word</string>
     <string name="error_no_input">No input provided!</string>
     <string name="error_char_already_guessed">You have already guessed that character!</string>
-    <string name="error_invalid_input">Please provide only letters or numbers!</string>
+    <string name="error_invalid_input">Please provide only letters when guessing a character!</string>
 </resources>

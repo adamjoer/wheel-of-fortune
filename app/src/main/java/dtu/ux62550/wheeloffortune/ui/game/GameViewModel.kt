@@ -57,7 +57,7 @@ class GameViewModel : ViewModel() {
         _category.value = wordAndCategory.first
 
         charactersToBeGuessed = puzzleAnswer.count {
-            it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9'
+            it in 'a'..'z' || it in 'A'..'Z'
         }
 
         updatePuzzleString()
