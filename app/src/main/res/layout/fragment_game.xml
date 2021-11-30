@@ -42,24 +42,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:letterSpacing="0.1"
             android:text="@{gameViewModel.currentWordPuzzle}"
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lives"
-            tools:text="Word to be guessed" />
+            tools:text="Word puzzle" />
 
         <TextView
-            android:id="@+id/wheel_result"
+            android:id="@+id/category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text=""
+            android:layout_marginTop="8dp"
+            android:text="@{gameViewModel.currentCategory}"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/word_puzzle"
-            tools:text="Wheel result" />
+            tools:text="Category" />
 
         <LinearLayout
             android:id="@+id/input_layout"
@@ -69,7 +70,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wheel_result">
+            app:layout_constraintTop_toBottomOf="@+id/category">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
