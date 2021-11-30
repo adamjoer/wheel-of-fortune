@@ -47,5 +47,20 @@ class GameFragment : Fragment() {
 
     private fun onSubmitGuess() {
         Log.d("GameFragment", "onSubmitGuess called")
+
+        val input = binding.guessInput.text.toString()
+
+        assert(input.isNotEmpty())
+
+        if (input.length == 1) {
+            viewModel.addGuessedChar(input[0])
+
+        } else {
+            if (viewModel.isGuessRight(input)) {
+                Log.d("GameFragment", "OMG, the guess was right!")
+            }
+        }
+
+        binding.guessInput.text?.clear()
     }
 }

@@ -32,17 +32,48 @@ class GameViewModel : ViewModel() {
     private lateinit var puzzleAnswer: String
 
     init {
+        _guessedCharacters.value = mutableListOf()
         loadPuzzle()
     }
 
+    private fun updatePuzzleString() {
+
+        val builder = java.lang.StringBuilder("[^ _\\-!,.")
+        _guessedCharacters.value?.forEach { char ->
+            builder.append(char)
+        }
+        builder.append("]")
+
+        val regexString = builder.toString()
+
+        Log.d("GameViewModel", "generatePuzzle: current regex = \"$regexString\"")
+
+        _wordPuzzle.value = puzzleAnswer.replace(Regex(regexString), "_")
+    }
+
     private fun loadPuzzle() {
-        wordAndCategory = wordsAndCategories.random()
+        val wordAndCategory = wordsAndCategories.random()
 
-        // val foo = currentWordAndCategory.second.replace(Regex("[a-zA-Z0-9]"), "_")
+        puzzleAnswer = wordAndCategory.second.uppercase(Locale.getDefault())
 
-        _currentCategory.value = wordAndCategory.first
-        _currentWordPuzzle.value = wordAndCategory.second.uppercase(Locale.getDefault())
+        _category.value = wordAndCategory.first
 
-        Log.d("GameViewModel", "wordAndCategory = $wordAndCategory")
+        updatePuzzleString()
+
+        Log.d("GameViewModel", "Category = \"${_category.value} Answer = \"$puzzleAnswer\"")
+    }
+
+    fun addGuessedChar(char: Char) {
+        val upperCaseChar = char.uppercaseChar()
+
+        assert(!_guessedCharacters.value!!.contains(upperCaseChar))
+
+        _guessedCharacters.value?.add(upperCaseChar)
+
+        updatePuzzleString()
+    }
+
+    fun isGuessRight(string: String): Boolean {
+        return puzzleAnswer.equals(string, true)
     }
 }
