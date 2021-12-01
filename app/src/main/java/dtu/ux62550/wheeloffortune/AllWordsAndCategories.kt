@@ -1,4 +1,4 @@
-package dtu.ux62550.wheeloffortune.ui.game
+package dtu.ux62550.wheeloffortune
 
 val wordsAndCategories: List<Pair<String, String>> =
     listOf(

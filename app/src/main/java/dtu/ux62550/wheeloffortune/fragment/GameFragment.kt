@@ -1,4 +1,4 @@
-package dtu.ux62550.wheeloffortune.ui.game
+package dtu.ux62550.wheeloffortune.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import dtu.ux62550.wheeloffortune.R
 import dtu.ux62550.wheeloffortune.adapter.GuessAdapter
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
+import dtu.ux62550.wheeloffortune.viewmodel.GameViewModel
 
 private const val TAG = "GameFragment"
 

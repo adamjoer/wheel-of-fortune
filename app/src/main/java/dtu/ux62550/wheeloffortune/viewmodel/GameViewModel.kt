@@ -1,9 +1,10 @@
-package dtu.ux62550.wheeloffortune.ui.game
+package dtu.ux62550.wheeloffortune.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dtu.ux62550.wheeloffortune.wordsAndCategories
 import java.util.*
 
 private const val TAG = "GameViewModel"

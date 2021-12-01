@@ -1,4 +1,4 @@
-package dtu.ux62550.wheeloffortune.ui.game
+package dtu.ux62550.wheeloffortune.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

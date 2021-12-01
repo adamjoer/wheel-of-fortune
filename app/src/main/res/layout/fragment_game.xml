@@ -7,7 +7,7 @@
 
         <variable
             name="gameViewModel"
-            type="dtu.ux62550.wheeloffortune.ui.game.GameViewModel" />
+            type="dtu.ux62550.wheeloffortune.viewmodel.GameViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
