@@ -27,9 +27,9 @@ class GameViewModel : ViewModel() {
     val category: LiveData<String>
         get() = _category
 
-    private val _guessedCharacters = MutableLiveData<MutableList<Char>>()
-    val guessedCharacters: LiveData<MutableList<Char>>
-        get() = _guessedCharacters
+    private val _guesses = MutableLiveData<MutableList<String>>()
+    val guesses: LiveData<MutableList<String>>
+        get() = _guesses
 
     lateinit var puzzleAnswer: String
 
@@ -38,13 +38,13 @@ class GameViewModel : ViewModel() {
     private var numberOfCharactersGuessed = 0
 
     init {
-        _guessedCharacters.value = mutableListOf()
+        _guesses.value = mutableListOf()
         loadPuzzle()
     }
 
     private fun updatePuzzleString() {
         val regexBuilder = StringBuilder("[^ _\\-!,.")
-        for (char in _guessedCharacters.value!!) {
+        for (char in _guesses.value!!) {
             regexBuilder.append(char)
         }
         regexBuilder.append("]")
@@ -70,14 +70,15 @@ class GameViewModel : ViewModel() {
         )
     }
 
-    fun addGuessedChar(char: Char): Int {
+    fun guessChar(char: Char): Int {
         val upperCaseChar = char.uppercaseChar()
+        val upperCaseCharString = upperCaseChar.toString()
 
-        if (_guessedCharacters.value!!.contains(upperCaseChar))
+        if (_guesses.value!!.contains(upperCaseCharString))
             return -1
 
-        _guessedCharacters.value?.add(0, upperCaseChar)
-        _guessedCharacters.value = _guessedCharacters.value
+        _guesses.value?.add(0, upperCaseCharString)
+        _guesses.value = _guesses.value
 
         updatePuzzleString()
 
@@ -90,8 +91,13 @@ class GameViewModel : ViewModel() {
         return matches
     }
 
-    fun isGuessRight(string: String): Boolean {
-        return puzzleAnswer.equals(string, true)
+    fun guessString(string: String): Boolean {
+        val allCapsString = string.uppercase(Locale.getDefault())
+
+        _guesses.value?.add(0, allCapsString)
+        _guesses.value = _guesses.value
+
+        return puzzleAnswer.equals(allCapsString, false)
     }
 
     private fun countMatches(char: Char): Int {
@@ -119,8 +125,8 @@ class GameViewModel : ViewModel() {
     fun reinitialiseValues() {
         _lives.value = START_LIVES
         _score.value = 0
-        _guessedCharacters.value?.clear()
-        _guessedCharacters.value = _guessedCharacters.value
+        _guesses.value?.clear()
+        _guesses.value = _guesses.value
         numberOfCharactersGuessed = 0
         loadPuzzle()
     }

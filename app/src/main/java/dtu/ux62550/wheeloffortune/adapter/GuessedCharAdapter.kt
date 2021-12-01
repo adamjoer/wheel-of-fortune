@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dtu.ux62550.wheeloffortune.databinding.GuessedCharItemBinding
 
-class GuessedCharAdapter : ListAdapter<Char, GuessedCharAdapter.ViewHolder>(DatasetDiffCallback()) {
+class GuessedCharAdapter : ListAdapter<String, GuessedCharAdapter.ViewHolder>(DatasetDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -20,8 +20,8 @@ class GuessedCharAdapter : ListAdapter<Char, GuessedCharAdapter.ViewHolder>(Data
 
     class ViewHolder(private val binding: GuessedCharItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Char) {
-            binding.character = item.toString()
+        fun bind(item: String) {
+            binding.character = item
             binding.executePendingBindings()
         }
 
@@ -35,13 +35,13 @@ class GuessedCharAdapter : ListAdapter<Char, GuessedCharAdapter.ViewHolder>(Data
     }
 }
 
-class DatasetDiffCallback: DiffUtil.ItemCallback<Char>() {
+class DatasetDiffCallback: DiffUtil.ItemCallback<String>() {
 
-    override fun areItemsTheSame(oldItem: Char, newItem: Char): Boolean {
+    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Char, newItem: Char): Boolean {
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
         return oldItem == newItem
     }
 }

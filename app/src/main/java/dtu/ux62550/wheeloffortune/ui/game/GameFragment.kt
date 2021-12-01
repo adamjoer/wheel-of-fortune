@@ -38,18 +38,18 @@ class GameFragment : Fragment() {
         val adapter = GuessedCharAdapter()
         binding.guessedChars.adapter = adapter
 
-        // Add observer to the guessedCharacters list, so the RecyclerView gets updated
-        viewModel.guessedCharacters.observe(viewLifecycleOwner, {
+        // Add observer to the guesses-list, so the RecyclerView gets updated
+        viewModel.guesses.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
 
-                // A character has been added to the beginning of the list
+                // A String has been added to the beginning of the list
                 if (it.size > 0) {
 
                     // Notify that an item has been added to the start of the dataset
                     adapter.notifyItemInserted(0)
 
-                    // Scroll the RecyclerView to where the new character has been inserted
+                    // Scroll the RecyclerView to where the new item has been inserted
                     binding.guessedChars.layoutManager?.scrollToPosition(0)
 
                 } else { // List has been cleared, so the whole dataset has changed
@@ -95,7 +95,7 @@ class GameFragment : Fragment() {
                 return
             }
 
-            val matches = viewModel.addGuessedChar(input[0])
+            val matches = viewModel.guessChar(input[0])
             if (matches < 0) {
                 setErrorTextField(true, R.string.error_char_already_guessed)
 
@@ -114,7 +114,7 @@ class GameFragment : Fragment() {
         } else {
             setErrorTextField(false)
 
-            if (viewModel.isGuessRight(input))
+            if (viewModel.guessString(input))
                 moveToGameEndedDest(true)
         }
 
