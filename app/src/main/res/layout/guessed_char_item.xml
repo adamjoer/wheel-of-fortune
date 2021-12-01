@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,10 +11,31 @@
             type="String" />
     </data>
 
-    <TextView
-        android:id="@+id/guessed_char"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="wrap_content"
-        android:text="@{character}" />
+        android:layout_width="match_parent" >
+
+        <TextView
+            android:id="@+id/guessed_char"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@{character}"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="X" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c0c0c0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guessed_char"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

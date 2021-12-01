@@ -118,6 +118,15 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c0c0c0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/guessed_chars"
             android:layout_width="match_parent"
@@ -126,7 +135,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/line" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
