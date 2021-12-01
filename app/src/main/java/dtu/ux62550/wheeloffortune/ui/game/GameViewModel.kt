@@ -74,7 +74,7 @@ class GameViewModel : ViewModel() {
         if (_guessedCharacters.value!!.contains(upperCaseChar))
             return -1
 
-        _guessedCharacters.value?.add(upperCaseChar)
+        _guessedCharacters.value?.add(0, upperCaseChar)
         _guessedCharacters.value = _guessedCharacters.value
 
         updatePuzzleString()

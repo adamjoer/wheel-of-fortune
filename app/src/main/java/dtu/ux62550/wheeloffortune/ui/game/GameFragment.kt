@@ -37,7 +37,8 @@ class GameFragment : Fragment() {
         viewModel.guessedCharacters.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
-                adapter.notifyItemInserted(it.size - 1)
+                adapter.notifyItemInserted(0)
+                binding.guessedChars.layoutManager?.scrollToPosition(0)
             }
         })
 
