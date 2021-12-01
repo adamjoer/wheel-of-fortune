@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
 
+private const val TAG = "GameViewModel"
+
 const val START_LIVES = 5
 
 class GameViewModel : ViewModel() {
@@ -63,7 +65,7 @@ class GameViewModel : ViewModel() {
         updatePuzzleString()
 
         Log.d(
-            "GameViewModel",
+            TAG,
             "Category = \"${_category.value}\" Answer = \"$puzzleAnswer\" ($charactersToBeGuessed)"
         )
     }
@@ -83,7 +85,7 @@ class GameViewModel : ViewModel() {
 
         charactersGuessed = charactersGuessed.plus(matches)
 
-        Log.d("GameViewModel", "charactersGuessed = $charactersGuessed")
+        Log.d(TAG, "charactersGuessed = $charactersGuessed")
 
         return matches
     }

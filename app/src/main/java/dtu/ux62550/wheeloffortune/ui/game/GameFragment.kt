@@ -12,6 +12,8 @@ import dtu.ux62550.wheeloffortune.R
 import dtu.ux62550.wheeloffortune.adapter.GuessedCharAdapter
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 
+private const val TAG = "GameFragment"
+
 /**
  * Fragment for 'Wheel of Fortune' game logic
  */
@@ -59,11 +61,11 @@ class GameFragment : Fragment() {
     }
 
     private fun onSpinWheel() {
-        Log.d("GameFragment", "onSpinWheel called")
+        Log.d(TAG, "onSpinWheel called")
     }
 
     private fun onSubmitGuess() {
-        Log.d("GameFragment", "onSubmitGuess called")
+        Log.d(TAG, "onSubmitGuess called")
 
         val input = binding.guessInput.text.toString()
 
