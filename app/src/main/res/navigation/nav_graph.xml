@@ -3,14 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/home_dest">
+    app:startDestination="@+id/game_dest">
 
     <fragment
-        android:id="@+id/home_dest"
+        android:id="@+id/game_dest"
         android:name="dtu.ux62550.wheeloffortune.ui.game.GameFragment"
         android:label="Home"
         tools:layout="@layout/fragment_game">
 
+        <action
+            android:id="@+id/action_game_dest_to_game_ended_dest"
+            app:destination="@id/game_ended_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/game_ended_dest"
+        android:name="dtu.ux62550.wheeloffortune.ui.game.GameEndedFragment"
+        android:label="Game Ended"
+        tools:layout="@layout/fragment_game_ended">
+        <argument
+            android:name="hasWon"
+            app:argType="boolean" />
+        <argument
+            android:name="puzzleAnswer"
+            app:argType="string" />
+        <argument
+            android:name="score"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

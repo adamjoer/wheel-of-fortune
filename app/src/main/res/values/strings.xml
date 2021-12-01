@@ -8,4 +8,7 @@
     <string name="error_no_input">No input provided!</string>
     <string name="error_char_already_guessed">You have already guessed that character!</string>
     <string name="error_invalid_input">Please provide only letters when guessing a character!</string>
+    <string name="you_won">You Won!</string>
+    <string name="you_lost">You lost</string>
+    <string name="puzzle_answer">Puzzle answer: %s</string>
 </resources>

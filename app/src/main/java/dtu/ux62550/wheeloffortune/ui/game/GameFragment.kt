@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import dtu.ux62550.wheeloffortune.R
 import dtu.ux62550.wheeloffortune.adapter.GuessedCharAdapter
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
@@ -88,16 +89,31 @@ class GameFragment : Fragment() {
 
                 Log.d("GameFragment", "Matches = $matches")
                 viewModel.incrementScore(matches)
+
+                if (viewModel.isOutOfLives())
+                    moveToGameEndedDest(false)
+                else if (viewModel.hasWordBeenGuessed())
+                    moveToGameEndedDest(true)
             }
 
         } else {
-            if (viewModel.isGuessRight(input)) {
-                Log.d("GameFragment", "OMG, the guess was right!")
-            }
             setErrorTextField(false)
+
+            if (viewModel.isGuessRight(input))
+                moveToGameEndedDest(true)
         }
 
         binding.guessInput.text?.clear()
+    }
+
+    private fun moveToGameEndedDest(hasWon: Boolean) {
+        val action = GameFragmentDirections.actionGameDestToGameEndedDest(
+            hasWon,
+            viewModel.puzzleAnswer,
+            viewModel.score.value!!
+        )
+
+        findNavController().navigate(action)
     }
 
     private fun setErrorTextField(error: Boolean, errorMessage: Int? = null) {

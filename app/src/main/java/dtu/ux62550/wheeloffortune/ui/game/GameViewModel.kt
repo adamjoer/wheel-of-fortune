@@ -29,7 +29,7 @@ class GameViewModel : ViewModel() {
     val guessedCharacters: LiveData<MutableList<Char>>
         get() = _guessedCharacters
 
-    private lateinit var puzzleAnswer: String
+    lateinit var puzzleAnswer: String
 
     private var charactersToBeGuessed = -1
 
@@ -104,6 +104,10 @@ class GameViewModel : ViewModel() {
 
     fun incrementScore(matches: Int) {
         _score.value = _score.value?.plus(matches)
+    }
+
+    fun isOutOfLives(): Boolean {
+        return _lives.value == 0
     }
 
     fun hasWordBeenGuessed(): Boolean {
