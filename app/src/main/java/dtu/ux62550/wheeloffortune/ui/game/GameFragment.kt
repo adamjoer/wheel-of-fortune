@@ -103,6 +103,7 @@ class GameFragment : Fragment() {
     private fun setErrorTextField(error: Boolean, errorMessage: Int? = null) {
         binding.guessInputLayout.isErrorEnabled = error
 
-        binding.guessInputLayout.error = if (error && errorMessage != null) getString(errorMessage) else null
+        binding.guessInputLayout.error =
+            if (error && errorMessage != null) getString(errorMessage) else null
     }
 }
