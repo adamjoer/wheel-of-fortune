@@ -44,8 +44,10 @@ class GameViewModel : ViewModel() {
 
     private fun updatePuzzleString() {
         val regexBuilder = StringBuilder("[^ _\\-!,.")
-        for (char in _guesses.value!!) {
-            regexBuilder.append(char)
+        for (string in _guesses.value!!) {
+
+            if (string.length == 1)
+                regexBuilder.append(string)
         }
         regexBuilder.append("]")
 
