@@ -128,7 +128,7 @@
             app:layout_constraintTop_toBottomOf="@+id/input_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/guessed_chars"
+            android:id="@+id/guesses"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scrollbars="vertical"

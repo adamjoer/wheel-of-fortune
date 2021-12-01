@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dtu.ux62550.wheeloffortune.R
-import dtu.ux62550.wheeloffortune.adapter.GuessedCharAdapter
+import dtu.ux62550.wheeloffortune.adapter.GuessAdapter
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 
 private const val TAG = "GameFragment"
@@ -35,8 +35,8 @@ class GameFragment : Fragment() {
         binding = FragmentGameBinding.inflate(inflater)
 
         // Initialise and assign adapter to the RecyclerView
-        val adapter = GuessedCharAdapter()
-        binding.guessedChars.adapter = adapter
+        val adapter = GuessAdapter()
+        binding.guesses.adapter = adapter
 
         // Add observer to the guesses-list, so the RecyclerView gets updated
         viewModel.guesses.observe(viewLifecycleOwner, {
@@ -50,7 +50,7 @@ class GameFragment : Fragment() {
                     adapter.notifyItemInserted(0)
 
                     // Scroll the RecyclerView to where the new item has been inserted
-                    binding.guessedChars.layoutManager?.scrollToPosition(0)
+                    binding.guesses.layoutManager?.scrollToPosition(0)
 
                 } else { // List has been cleared, so the whole dataset has changed
                     adapter.notifyDataSetChanged()

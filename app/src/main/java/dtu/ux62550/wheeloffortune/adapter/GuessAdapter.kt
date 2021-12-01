@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import dtu.ux62550.wheeloffortune.databinding.GuessedCharItemBinding
+import dtu.ux62550.wheeloffortune.databinding.GuessItemBinding
 
-class GuessedCharAdapter : ListAdapter<String, GuessedCharAdapter.ViewHolder>(DatasetDiffCallback()) {
+class GuessAdapter : ListAdapter<String, GuessAdapter.ViewHolder>(DatasetDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -18,17 +18,17 @@ class GuessedCharAdapter : ListAdapter<String, GuessedCharAdapter.ViewHolder>(Da
         return ViewHolder.from(parent)
     }
 
-    class ViewHolder(private val binding: GuessedCharItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: GuessItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: String) {
-            binding.character = item
+            binding.guessString = item
             binding.executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = GuessedCharItemBinding.inflate(layoutInflater, parent, false)
+                val binding = GuessItemBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
