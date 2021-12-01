@@ -11,4 +11,6 @@
     <string name="you_won">You Won!</string>
     <string name="you_lost">You lost</string>
     <string name="puzzle_answer">Puzzle answer: %s</string>
+    <string name="play_again">Play again</string>
+    <string name="exit">Exit the app</string>
 </resources>

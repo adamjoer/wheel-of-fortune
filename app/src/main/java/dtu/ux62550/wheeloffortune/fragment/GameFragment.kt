@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dtu.ux62550.wheeloffortune.R
@@ -23,6 +24,16 @@ class GameFragment : Fragment() {
 
     private lateinit var binding: FragmentGameBinding
     private lateinit var viewModel: GameViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Change back-button behaviour on this screen
+        // so it exits the app instead of potentially going to the game-ended fragment
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            activity?.finish()
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -44,7 +55,7 @@ class GameFragment : Fragment() {
             it?.let {
                 adapter.submitList(it)
 
-                // A String has been added to the beginning of the list
+                // Check if an item has been added to the beginning of the list
                 if (it.size > 0) {
 
                     // Notify that an item has been added to the start of the dataset
@@ -103,26 +114,26 @@ class GameFragment : Fragment() {
             } else {
                 setErrorTextField(false)
 
-                Log.d("GameFragment", "Matches = $matches")
+                Log.d(TAG, "Matches = $matches")
                 viewModel.incrementScore(matches)
 
                 if (viewModel.isOutOfLives())
-                    moveToGameEndedDest(false)
+                    navigateToGameEndedDest(false)
                 else if (viewModel.hasWordBeenGuessed())
-                    moveToGameEndedDest(true)
+                    navigateToGameEndedDest(true)
             }
 
         } else {
             setErrorTextField(false)
 
             if (viewModel.guessString(input))
-                moveToGameEndedDest(true)
+                navigateToGameEndedDest(true)
         }
 
         binding.guessInput.text?.clear()
     }
 
-    private fun moveToGameEndedDest(hasWon: Boolean) {
+    private fun navigateToGameEndedDest(hasWon: Boolean) {
         val action = GameFragmentDirections.actionGameDestToGameEndedDest(
             hasWon,
             viewModel.puzzleAnswer,
@@ -130,8 +141,6 @@ class GameFragment : Fragment() {
         )
 
         findNavController().navigate(action)
-
-        viewModel.reinitialiseValues()
     }
 
     private fun setErrorTextField(error: Boolean, errorMessage: Int? = null) {

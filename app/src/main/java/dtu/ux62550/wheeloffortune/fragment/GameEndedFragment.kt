@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
 import dtu.ux62550.wheeloffortune.R
 
 private const val TAG = "GameEndedFragment"
@@ -32,6 +35,10 @@ class GameEndedFragment : Fragment() {
             puzzleAnswer = it.getString(ARG_PUZZLE_ANSWER)
             score = it.getInt(ARG_SCORE)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            navigateToGameDest()
+        }
     }
 
     override fun onCreateView(
@@ -46,10 +53,27 @@ class GameEndedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireView().findViewById<TextView>(R.id.status_text).text =
+        view.findViewById<TextView>(R.id.status_text).text =
             getString(if (hasWon!!) R.string.you_won else R.string.you_lost)
-        requireView().findViewById<TextView>(R.id.puzzle_answer).text = getString(R.string.puzzle_answer, puzzleAnswer!!)
-        requireView().findViewById<TextView>(R.id.end_score).text = getString(R.string.score, score!!)
+
+        view.findViewById<TextView>(R.id.puzzle_answer).text =
+            getString(R.string.puzzle_answer, puzzleAnswer!!)
+
+        view.findViewById<TextView>(R.id.end_score).text =
+            getString(R.string.score, score!!)
+
+        view.findViewById<Button>(R.id.play_again).setOnClickListener {
+            navigateToGameDest()
+        }
+
+        view.findViewById<Button>(R.id.exit).setOnClickListener {
+            activity?.finish()
+        }
+    }
+
+    private fun navigateToGameDest() {
+        val action = GameEndedFragmentDirections.actionGameEndedDestToGameDest()
+        findNavController().navigate(action)
     }
 
     companion object {

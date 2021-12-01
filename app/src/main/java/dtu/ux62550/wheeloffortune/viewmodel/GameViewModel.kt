@@ -124,13 +124,4 @@ class GameViewModel : ViewModel() {
     fun hasWordBeenGuessed(): Boolean {
         return numberOfCharactersGuessed == numberOfCharactersToBeGuessed
     }
-
-    fun reinitialiseValues() {
-        _lives.value = START_LIVES
-        _score.value = 0
-        _guesses.value?.clear()
-        _guesses.value = _guesses.value
-        numberOfCharactersGuessed = 0
-        loadPuzzle()
-    }
 }

@@ -29,6 +29,10 @@
         <argument
             android:name="score"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_game_ended_dest_to_game_dest"
+            app:destination="@id/game_dest"
+            app:popUpToInclusive="false" />
     </fragment>
 
 </navigation>
