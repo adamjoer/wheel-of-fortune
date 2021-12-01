@@ -49,7 +49,7 @@ class GameEndedFragment : Fragment() {
         requireView().findViewById<TextView>(R.id.status_text).text =
             getString(if (hasWon!!) R.string.you_won else R.string.you_lost)
         requireView().findViewById<TextView>(R.id.puzzle_answer).text = getString(R.string.puzzle_answer, puzzleAnswer!!)
-        requireView().findViewById<TextView>(R.id.end_score).text = score!!.toString()
+        requireView().findViewById<TextView>(R.id.end_score).text = getString(R.string.score, score!!)
     }
 
     companion object {
