@@ -1,5 +1,6 @@
 package dtu.ux62550.wheeloffortune.ui.game
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ class GameFragment : Fragment() {
     private lateinit var binding: FragmentGameBinding
     private lateinit var viewModel: GameViewModel
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,8 +42,19 @@ class GameFragment : Fragment() {
         viewModel.guessedCharacters.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
-                adapter.notifyItemInserted(0)
-                binding.guessedChars.layoutManager?.scrollToPosition(0)
+
+                // A character has been added to the beginning of the list
+                if (it.size > 0) {
+
+                    // Notify that an item has been added to the start of the dataset
+                    adapter.notifyItemInserted(0)
+
+                    // Scroll the RecyclerView to where the new character has been inserted
+                    binding.guessedChars.layoutManager?.scrollToPosition(0)
+
+                } else { // List has been cleared, so the whole dataset has changed
+                    adapter.notifyDataSetChanged()
+                }
             }
         })
 
@@ -116,6 +129,8 @@ class GameFragment : Fragment() {
         )
 
         findNavController().navigate(action)
+
+        viewModel.reinitialiseValues()
     }
 
     private fun setErrorTextField(error: Boolean, errorMessage: Int? = null) {

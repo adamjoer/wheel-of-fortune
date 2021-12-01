@@ -33,9 +33,9 @@ class GameViewModel : ViewModel() {
 
     lateinit var puzzleAnswer: String
 
-    private var charactersToBeGuessed = -1
+    private var numberOfCharactersToBeGuessed = -1
 
-    private var charactersGuessed = 0
+    private var numberOfCharactersGuessed = 0
 
     init {
         _guessedCharacters.value = mutableListOf()
@@ -58,7 +58,7 @@ class GameViewModel : ViewModel() {
         puzzleAnswer = wordAndCategory.second.uppercase(Locale.getDefault())
         _category.value = wordAndCategory.first
 
-        charactersToBeGuessed = puzzleAnswer.count {
+        numberOfCharactersToBeGuessed = puzzleAnswer.count {
             it in 'a'..'z' || it in 'A'..'Z'
         }
 
@@ -66,7 +66,7 @@ class GameViewModel : ViewModel() {
 
         Log.d(
             TAG,
-            "Category = \"${_category.value}\" Answer = \"$puzzleAnswer\" ($charactersToBeGuessed)"
+            "Category = \"${_category.value}\" Answer = \"$puzzleAnswer\" ($numberOfCharactersToBeGuessed)"
         )
     }
 
@@ -83,9 +83,9 @@ class GameViewModel : ViewModel() {
 
         val matches = countMatches(upperCaseChar)
 
-        charactersGuessed = charactersGuessed.plus(matches)
+        numberOfCharactersGuessed = numberOfCharactersGuessed.plus(matches)
 
-        Log.d(TAG, "charactersGuessed = $charactersGuessed")
+        Log.d(TAG, "numberOfCharactersGuessed = $numberOfCharactersGuessed")
 
         return matches
     }
@@ -113,6 +113,15 @@ class GameViewModel : ViewModel() {
     }
 
     fun hasWordBeenGuessed(): Boolean {
-        return charactersGuessed == charactersToBeGuessed
+        return numberOfCharactersGuessed == numberOfCharactersToBeGuessed
+    }
+
+    fun reinitialiseValues() {
+        _lives.value = START_LIVES
+        _score.value = 0
+        _guessedCharacters.value?.clear()
+        _guessedCharacters.value = _guessedCharacters.value
+        numberOfCharactersGuessed = 0
+        loadPuzzle()
     }
 }
