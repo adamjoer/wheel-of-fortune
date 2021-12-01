@@ -99,9 +99,9 @@ class GameFragment : Fragment() {
         binding.guessInput.text?.clear()
     }
 
-    private fun setErrorTextField(error: Boolean, errorMessage: Int = -1) {
+    private fun setErrorTextField(error: Boolean, errorMessage: Int? = null) {
         binding.guessInputLayout.isErrorEnabled = error
 
-        binding.guessInputLayout.error = if (error) getString(errorMessage) else null
+        binding.guessInputLayout.error = if (error && errorMessage != null) getString(errorMessage) else null
     }
 }
