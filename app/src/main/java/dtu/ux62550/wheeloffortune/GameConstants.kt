@@ -90,3 +90,42 @@ val wordsAndCategories: List<Pair<String, String>> =
         Pair("Occupation", "Movie Critic"),
         Pair("Occupation", "Investigative Journalist")
     )
+
+enum class WheelResultType {
+    UNASSIGNED,
+    POINTS,
+    EXTRA_TURN,
+    LOSE_A_TURN,
+    BANKRUPT,
+}
+
+val wheelResults: List<Pair<WheelResultType, Int?>> =
+    listOf(
+        Pair(WheelResultType.POINTS, 100),
+        Pair(WheelResultType.POINTS, 200),
+        Pair(WheelResultType.POINTS, 300),
+        Pair(WheelResultType.POINTS, 400),
+        Pair(WheelResultType.POINTS, 500),
+        Pair(WheelResultType.POINTS, 550),
+        Pair(WheelResultType.POINTS, 600),
+        Pair(WheelResultType.POINTS, 600),
+        Pair(WheelResultType.POINTS, 600),
+        Pair(WheelResultType.POINTS, 650),
+        Pair(WheelResultType.POINTS, 650),
+        Pair(WheelResultType.POINTS, 700),
+        Pair(WheelResultType.POINTS, 700),
+        Pair(WheelResultType.POINTS, 750),
+        Pair(WheelResultType.POINTS, 800),
+        Pair(WheelResultType.POINTS, 900),
+        Pair(WheelResultType.POINTS, 950),
+        Pair(WheelResultType.POINTS, 1000),
+        Pair(WheelResultType.POINTS, 3500),
+
+        Pair(WheelResultType.LOSE_A_TURN, null),
+
+        Pair(WheelResultType.EXTRA_TURN, null),
+
+        Pair(WheelResultType.BANKRUPT, null),
+        Pair(WheelResultType.BANKRUPT, null),
+        Pair(WheelResultType.BANKRUPT, null),
+    )
