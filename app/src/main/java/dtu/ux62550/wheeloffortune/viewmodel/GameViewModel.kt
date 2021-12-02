@@ -94,7 +94,7 @@ class GameViewModel : ViewModel() {
     /**
      * Method for guessing either a single character in the puzzle word or the whole word.
      * A guess that has already been previously provided will be rejected.
-     * The guess will be compared with the puzzle word, and a number of matches will be returned.
+     * The guess will be compared with the puzzle word, and number of matches will be returned.
      * This number can be used to calculate the amount of points the user should receive.
      *
      * @param guess String that the user has input as guess to the puzzle word
