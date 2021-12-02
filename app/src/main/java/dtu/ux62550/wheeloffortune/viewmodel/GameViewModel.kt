@@ -90,7 +90,6 @@ class GameViewModel : ViewModel() {
         return _currentWheelResult.value!!
     }
 
-
     /**
      * Method for guessing either a single character in the puzzle word or the whole word.
      * A guess that has already been previously provided will be rejected.
@@ -111,7 +110,7 @@ class GameViewModel : ViewModel() {
             return -1
 
         _guesses.value?.add(0, allCapsString)
-        _guesses.value = _guesses.value
+        _guesses.value = _guesses.value // Hack to get LiveData to update
 
         val matches: Int = if (allCapsString.length == 1) {
             val count = countMatches(allCapsString[0])
