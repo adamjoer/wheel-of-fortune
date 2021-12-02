@@ -11,16 +11,12 @@ import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import dtu.ux62550.wheeloffortune.R
 
-private const val TAG = "GameEndedFragment"
-
 private const val ARG_HAS_WON = "hasWon"
 private const val ARG_PUZZLE_ANSWER = "puzzleAnswer"
 private const val ARG_SCORE = "score"
 
 /**
- * A simple [Fragment] subclass.
- * Use the [GameEndedFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment for the end game screen
  */
 class GameEndedFragment : Fragment() {
 
@@ -55,12 +51,8 @@ class GameEndedFragment : Fragment() {
 
         view.findViewById<TextView>(R.id.status_text).text =
             getString(if (hasWon!!) R.string.you_won else R.string.you_lost)
-
-        view.findViewById<TextView>(R.id.puzzle_answer).text =
-            getString(R.string.puzzle_answer, puzzleAnswer!!)
-
-        view.findViewById<TextView>(R.id.end_score).text =
-            getString(R.string.score, score!!)
+        view.findViewById<TextView>(R.id.puzzle_answer).text = puzzleAnswer
+        view.findViewById<TextView>(R.id.end_score).text = getString(R.string.score, score!!)
 
         view.findViewById<Button>(R.id.play_again).setOnClickListener {
             navigateToGameDest()
@@ -74,26 +66,5 @@ class GameEndedFragment : Fragment() {
     private fun navigateToGameDest() {
         val action = GameEndedFragmentDirections.actionGameEndedDestToGameDest()
         findNavController().navigate(action)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param hasWon Whether the user has won
-         * @param puzzleAnswer The answer to the word puzzle
-         * @param score The end score
-         * @return A new instance of fragment GameEndedFragment.
-         */
-        @JvmStatic
-        fun newInstance(hasWon: Boolean, puzzleAnswer: String, score: Int) =
-            GameEndedFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(ARG_HAS_WON, hasWon)
-                    putString(ARG_PUZZLE_ANSWER, puzzleAnswer)
-                    putInt(ARG_SCORE, score)
-                }
-            }
     }
 }

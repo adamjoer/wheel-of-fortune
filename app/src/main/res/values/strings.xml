@@ -12,9 +12,9 @@
     <string name="error_no_input">No input provided!</string>
     <string name="error_char_already_guessed">You have already guessed that!</string>
     <string name="error_invalid_input">Please provide only letters when guessing a character!</string>
-    <string name="you_won">You Won!</string>
-    <string name="you_lost">You lost</string>
-    <string name="puzzle_answer">Puzzle answer: %s</string>
+    <string name="you_won"><u>You Won!</u></string>
+    <string name="you_lost"><u>You lost</u></string>
+    <string name="answer_was">The answer was</string>
     <string name="play_again">Play again</string>
     <string name="exit">Exit the app</string>
 </resources>
