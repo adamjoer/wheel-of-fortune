@@ -1,8 +1,6 @@
 package dtu.ux62550.wheeloffortune.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +14,6 @@ import dtu.ux62550.wheeloffortune.adapter.GuessAdapter
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 import dtu.ux62550.wheeloffortune.viewmodel.GameViewModel
 import java.lang.IllegalStateException
-
-private const val TAG = "GameFragment"
 
 /**
  * Fragment for 'Wheel of Fortune' game logic
@@ -37,7 +33,6 @@ class GameFragment : Fragment() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,18 +52,11 @@ class GameFragment : Fragment() {
             it?.let {
                 adapter.submitList(it)
 
-                // Check if an item has been added to the beginning of the list
-                if (it.size > 0) {
+                // Notify that an item has been added to the start of the dataset
+                adapter.notifyItemInserted(0)
 
-                    // Notify that an item has been added to the start of the dataset
-                    adapter.notifyItemInserted(0)
-
-                    // Scroll the RecyclerView to where the new item has been inserted
-                    binding.guesses.layoutManager?.scrollToPosition(0)
-
-                } else { // List has been cleared, so the whole dataset has changed
-                    adapter.notifyDataSetChanged()
-                }
+                // Scroll the RecyclerView to where the new item has been inserted
+                binding.guesses.layoutManager?.scrollToPosition(0)
             }
         })
 
@@ -101,8 +89,6 @@ class GameFragment : Fragment() {
     }
 
     private fun onSpinWheel() {
-        Log.d(TAG, "onSpinWheel called")
-
         val wheelResult = viewModel.spinTheWheel()
 
         when (wheelResult.first) {
@@ -119,8 +105,6 @@ class GameFragment : Fragment() {
     }
 
     private fun onSubmitGuess() {
-        Log.d(TAG, "onSubmitGuess called")
-
         val input = binding.guessInput.text.toString()
         if (input.isEmpty()) {
             setErrorTextField(true, R.string.error_no_input)
@@ -134,8 +118,6 @@ class GameFragment : Fragment() {
         }
 
         val matches = viewModel.guess(input)
-
-        Log.d(TAG, "Matches = $matches")
 
         if (matches < 0) {
             setErrorTextField(true, R.string.error_char_already_guessed)
