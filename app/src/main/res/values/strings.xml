@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">s200718 Wheel of Fortune</string>
     <string name="spin_the_wheel">Spin the Wheel</string>
+    <string name="points">Points: %d</string>
+    <string name="extra_turn">You get an extra life!</string>
+    <string name="lose_a_turn">You lose a life</string>
+    <string name="bankrupt">You are bankrupt!</string>
     <string name="submit_guess">Submit guess</string>
     <string name="lives">Lives: %d</string>
     <string name="score">Score: %d</string>
     <string name="guess_input_hint">Enter a letter or guess the whole word</string>
     <string name="error_no_input">No input provided!</string>
-    <string name="error_char_already_guessed">You have already guessed that character!</string>
+    <string name="error_char_already_guessed">You have already guessed that!</string>
     <string name="error_invalid_input">Please provide only letters when guessing a character!</string>
     <string name="you_won">You Won!</string>
     <string name="you_lost">You lost</string>

@@ -11,9 +11,11 @@ import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dtu.ux62550.wheeloffortune.R
+import dtu.ux62550.wheeloffortune.WheelResultType.*
 import dtu.ux62550.wheeloffortune.adapter.GuessAdapter
 import dtu.ux62550.wheeloffortune.databinding.FragmentGameBinding
 import dtu.ux62550.wheeloffortune.viewmodel.GameViewModel
+import java.lang.IllegalStateException
 
 private const val TAG = "GameFragment"
 
@@ -50,7 +52,7 @@ class GameFragment : Fragment() {
         val adapter = GuessAdapter()
         binding.guesses.adapter = adapter
 
-        // Add observer to the guesses-list, so the RecyclerView gets updated
+        // Add observer to the guesses-list, so its RecyclerView gets updated
         viewModel.guesses.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.submitList(it)
@@ -70,6 +72,17 @@ class GameFragment : Fragment() {
             }
         })
 
+        // Add observer to the wheel result, so its TextView gets updated
+        viewModel.currentWheelResult.observe(viewLifecycleOwner, {
+            binding.wheelResult.text = when (it.first) {
+                UNASSIGNED -> getString(R.string.spin_the_wheel)
+                POINTS -> getString(R.string.points, it.second)
+                EXTRA_TURN -> getString(R.string.extra_turn)
+                LOSE_A_TURN -> getString(R.string.lose_a_turn)
+                BANKRUPT -> getString(R.string.bankrupt)
+            }
+        })
+
         return binding.root
     }
 
@@ -77,8 +90,10 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lifecycleOwner = viewLifecycleOwner
-
         binding.gameViewModel = viewModel
+
+        // Disable button to submit a guess, since the game starts by spinning the wheel
+        setButtonsEnabled(false)
 
         // Setup click listeners for buttons
         binding.spinWheel.setOnClickListener { onSpinWheel() }
@@ -87,50 +102,59 @@ class GameFragment : Fragment() {
 
     private fun onSpinWheel() {
         Log.d(TAG, "onSpinWheel called")
+
+        val wheelResult = viewModel.spinTheWheel()
+
+        when (wheelResult.first) {
+            UNASSIGNED -> throw IllegalStateException("Result of spinTheWheel-method must never be UNASSIGNED!")
+            POINTS -> setButtonsEnabled(true)
+            EXTRA_TURN -> viewModel.incrementLives()
+            LOSE_A_TURN -> {
+                viewModel.decrementLives()
+                if (viewModel.isOutOfLives())
+                    navigateToGameEndedDest(false)
+            }
+            BANKRUPT -> viewModel.resetScore()
+        }
     }
 
     private fun onSubmitGuess() {
         Log.d(TAG, "onSubmitGuess called")
 
         val input = binding.guessInput.text.toString()
-
         if (input.isEmpty()) {
             setErrorTextField(true, R.string.error_no_input)
             return
         }
 
-        if (input.length == 1) {
-
-            if (!(input[0] in 'a'..'z' || input[0] in 'A'..'Z')) {
-                setErrorTextField(true, R.string.error_invalid_input)
-                binding.guessInput.text?.clear()
-                return
-            }
-
-            val matches = viewModel.guessChar(input[0])
-            if (matches < 0) {
-                setErrorTextField(true, R.string.error_char_already_guessed)
-
-            } else {
-                setErrorTextField(false)
-
-                Log.d(TAG, "Matches = $matches")
-                viewModel.incrementScore(matches)
-
-                if (viewModel.isOutOfLives())
-                    navigateToGameEndedDest(false)
-                else if (viewModel.hasWordBeenGuessed())
-                    navigateToGameEndedDest(true)
-            }
-
-        } else {
-            setErrorTextField(false)
-
-            if (viewModel.guessString(input))
-                navigateToGameEndedDest(true)
+        if (input.length == 1 && !(input[0] in 'a'..'z' || input[0] in 'A'..'Z')) {
+            setErrorTextField(true, R.string.error_invalid_input)
+            binding.guessInput.text?.clear()
+            return
         }
 
+        val matches = viewModel.guess(input)
+
+        Log.d(TAG, "Matches = $matches")
+
+        if (matches < 0) {
+            setErrorTextField(true, R.string.error_char_already_guessed)
+            return
+        }
+
+        if (matches == 0)
+            viewModel.decrementLives()
+        else
+            viewModel.addToScore(viewModel.getPoints() * matches)
+
+        setErrorTextField(false)
         binding.guessInput.text?.clear()
+
+        when {
+            viewModel.isOutOfLives() -> navigateToGameEndedDest(false)
+            viewModel.hasWordBeenGuessed() -> navigateToGameEndedDest(true)
+            else -> setButtonsEnabled(false)
+        }
     }
 
     private fun navigateToGameEndedDest(hasWon: Boolean) {
@@ -148,5 +172,10 @@ class GameFragment : Fragment() {
 
         binding.guessInputLayout.error =
             if (error && errorMessage != null) getString(errorMessage) else null
+    }
+
+    private fun setButtonsEnabled(guessingMode: Boolean) {
+        binding.submitGuess.isEnabled = guessingMode
+        binding.spinWheel.isEnabled = !guessingMode
     }
 }

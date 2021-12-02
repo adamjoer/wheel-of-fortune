@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dtu.ux62550.wheeloffortune.WheelResultType
+import dtu.ux62550.wheeloffortune.WheelResultType.*
+import dtu.ux62550.wheeloffortune.wheelResults
 import dtu.ux62550.wheeloffortune.wordsAndCategories
 import java.util.*
 
@@ -32,6 +35,11 @@ class GameViewModel : ViewModel() {
     val guesses: LiveData<MutableList<String>>
         get() = _guesses
 
+    private val _currentWheelResult =
+        MutableLiveData<Pair<WheelResultType, Int?>>(Pair(UNASSIGNED, null))
+    val currentWheelResult: LiveData<Pair<WheelResultType, Int?>>
+        get() = _currentWheelResult
+
     lateinit var puzzleAnswer: String
 
     private var numberOfCharactersToBeGuessed = -1
@@ -41,18 +49,6 @@ class GameViewModel : ViewModel() {
     init {
         _guesses.value = mutableListOf()
         loadPuzzle()
-    }
-
-    private fun updatePuzzleString() {
-        val regexBuilder = StringBuilder("[^ _\\-!,.'\"")
-        for (string in _guesses.value!!) {
-
-            if (string.length == 1)
-                regexBuilder.append(string)
-        }
-        regexBuilder.append("]")
-
-        _wordPuzzle.value = puzzleAnswer.replace(Regex(regexBuilder.toString()), "_")
     }
 
     private fun loadPuzzle() {
@@ -73,48 +69,106 @@ class GameViewModel : ViewModel() {
         )
     }
 
-    fun guessChar(char: Char): Int {
-        val upperCaseChar = char.uppercaseChar()
-        val upperCaseCharString = upperCaseChar.toString()
+    private fun updatePuzzleString() {
+        if (hasWordBeenGuessed()) {
+            _wordPuzzle.value = puzzleAnswer
+            return
+        }
 
-        if (_guesses.value!!.contains(upperCaseCharString))
-            return -1
+        val regexBuilder = StringBuilder("[^ _\\-!,.'\"")
+        for (guesses in _guesses.value!!) {
+            if (guesses.length == 1)
+                regexBuilder.append(guesses)
+        }
+        regexBuilder.append("]")
 
-        _guesses.value?.add(0, upperCaseCharString)
-        _guesses.value = _guesses.value
-
-        updatePuzzleString()
-
-        val matches = countMatches(upperCaseChar)
-
-        numberOfCharactersGuessed = numberOfCharactersGuessed.plus(matches)
-
-        Log.d(TAG, "numberOfCharactersGuessed = $numberOfCharactersGuessed")
-
-        return matches
+        _wordPuzzle.value = puzzleAnswer.replace(Regex(regexBuilder.toString()), "_")
     }
 
-    fun guessString(string: String): Boolean {
-        val allCapsString = string.uppercase(Locale.getDefault())
+    fun spinTheWheel(): Pair<WheelResultType, Int?> {
+        _currentWheelResult.value = wheelResults.random()
+        return _currentWheelResult.value!!
+    }
+
+
+    /**
+     * Method for guessing either a single character in the puzzle word or the whole word.
+     * A guess that has already been previously provided will be rejected.
+     * The guess will be compared with the puzzle word, and a number of matches will be returned.
+     * This number can be used to calculate the amount of points the user should receive.
+     *
+     * @param guess String that the user has input as guess to the puzzle word
+     * @return If the guess has already been provided previously, a negative number is returned.
+     *         If the guess is a single character, the number of matching characters in the puzzle word
+     *         is returned.
+     *         If the guess is longer than a single character, and the string matches
+     *         with the puzzle word, the number of remaining hidden letters in the puzzle word is returned,
+     *         otherwise 0 is returned.
+     */
+    fun guess(guess: String): Int {
+        val allCapsString = guess.uppercase(Locale.getDefault())
+        if (guesses.value!!.contains(allCapsString))
+            return -1
 
         _guesses.value?.add(0, allCapsString)
         _guesses.value = _guesses.value
 
-        return puzzleAnswer.equals(allCapsString, false)
+        val matches: Int = if (allCapsString.length == 1) {
+            val count = countMatches(allCapsString[0])
+            numberOfCharactersGuessed += count
+            count
+
+        } else {
+            if (puzzleAnswer.equals(allCapsString, false)) {
+                val numberOfHiddenCharacters =
+                    numberOfCharactersToBeGuessed - numberOfCharactersGuessed
+
+                numberOfCharactersGuessed = numberOfCharactersToBeGuessed
+                numberOfHiddenCharacters
+
+            } else {
+                0
+            }
+        }
+
+        if (matches > 0)
+            updatePuzzleString()
+
+        return matches
     }
 
-    private fun countMatches(char: Char): Int {
+    private fun countMatches(guess: Char): Int {
         var count = 0
-        for (answerChar in puzzleAnswer) {
-            if (answerChar == char)
-                count = count.inc()
+        for (char in puzzleAnswer) {
+            if (char == guess)
+                count++
         }
 
         return count
     }
 
-    fun incrementScore(matches: Int) {
-        _score.value = _score.value?.plus(matches)
+    fun getPoints(): Int {
+        assert(_currentWheelResult.value!!.first == POINTS)
+
+        return _currentWheelResult.value?.second!!
+    }
+
+    fun addToScore(points: Int) {
+        _score.value = _score.value?.plus(points)
+    }
+
+    fun resetScore() {
+        _score.value = 0
+    }
+
+    fun decrementLives() {
+        assert(_lives.value!! > 0)
+
+        _lives.value = _lives.value?.dec()
+    }
+
+    fun incrementLives() {
+        _lives.value = _lives.value?.inc()
     }
 
     fun isOutOfLives(): Boolean {
